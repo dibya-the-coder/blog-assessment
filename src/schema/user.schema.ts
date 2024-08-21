@@ -5,7 +5,6 @@ export type UserDocument = HydratedDocument<User>;
 
 @Schema({ collection: 'BLOG Task User' })
 export class User {
-  @Prop({ unique: true })
   username: string;
 
   @Prop({ unique: true })

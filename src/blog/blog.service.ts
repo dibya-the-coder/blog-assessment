@@ -147,4 +147,22 @@ export class BlogService {
       };
     }
   }
+  async getUserById() {
+    try {
+      //console.log("data user data");
+      return;
+      // const user = await this.userModel.findById(userId);
+      // if (!user) throw new NotFoundException('User not found');
+      // return {
+      //   message: 'User found successfully',
+      //   statusCode: HttpStatus.OK,
+      //   payload: user,
+      // };
+    } catch (e) {
+      return {
+        message: e.message,
+        statusCode: e.status,
+      };
+    }
+  }
 }

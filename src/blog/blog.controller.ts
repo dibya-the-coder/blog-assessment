@@ -20,6 +20,22 @@ import { UpdateBlogDto } from './dto/updateBlog.dto';
 export class BlogController {
   constructor(private blogService: BlogService) {}
   @UseGuards(JwtAuthGuard)
+
+  @Get('/current')
+  getUser() {
+    try {
+      return this.blogService.getAll();
+    } catch (error) {
+      console.log('get current user error');
+      return;
+    }
+  }
+  @Get('test')
+  tryMethod(){
+    return 'hello';
+  }
+
+  // @UseGuards(JwtAuthGuard)
   @Post('/')
   create(@Body() dto: CreateBlogDto, @Req() req) {
     try {
@@ -81,4 +97,7 @@ export class BlogController {
       };
     }
   }
+
+ 
+
 }
