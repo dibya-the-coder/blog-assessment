@@ -27,6 +27,7 @@ export class AuthService {
     try {
       const newUser = new this.userModel({
         ...dto,
+        username: `${dto.username}-${dto.email.split('@')[0]}`,
         password: await bcrypt.hash(dto.password, 10),
       });
       const user = await newUser.save();
@@ -64,6 +65,7 @@ export class AuthService {
         email: isUser.email,
         _id: isUser._id,
       };
+      console.log(signUser);
       return {
         message: 'login successful',
         statusCode: HttpStatus.OK,
@@ -74,6 +76,41 @@ export class AuthService {
         message: 'Login failed',
         error: error.message,
         statusCode: error.status,
+      };
+    }
+  }
+
+  async googlelogin(dto: { name: string; email: string }) {
+    try {
+      const isExists = await this.userModel.findOne({ email: dto.email });
+      if (isExists) {
+        return {
+          message: 'Login successFully',
+          statusCode: HttpStatus.OK,
+          access_token: this.jwt.sign({ _id: isExists._id }),
+        };
+      } else {
+        const newUser = new this.userModel({
+          ...dto,
+          password: Math.random.toString(),
+        });
+        const user = await newUser.save();
+
+        return {
+          message: 'user created Successfully',
+          statusCode: HttpStatus.CREATED,
+          payload: user,
+          access_token: this.jwt.sign({
+            _id: user._id,
+            userName: user.username,
+          }),
+        };
+      }
+    } catch (error) {
+      return {
+        message: 'user creataion failed',
+        statusCode: HttpStatus.CONFLICT,
+        error: error.message,
       };
     }
   }

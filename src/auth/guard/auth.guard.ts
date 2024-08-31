@@ -17,7 +17,6 @@ export class JwtAuthGuard implements CanActivate {
    * @returns {boolean}
    */
   canActivate(context: ExecutionContext): boolean {
-    console.log('hello');
     const request = context.switchToHttp().getRequest();
     const token = request.headers.authorization?.split(' ')[1];
     if (!token) {
@@ -28,7 +27,8 @@ export class JwtAuthGuard implements CanActivate {
       const payload = this.jwtService.verify(token, {
         secret: SECRET,
       });
-      request.user = { _id: payload._id };
+      request.user = { _id: payload._id, userName: payload.username };
+      // console.log(payload);
     } catch (err) {
       throw new UnauthorizedException('Invalid token');
     }

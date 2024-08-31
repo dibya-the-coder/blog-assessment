@@ -28,4 +28,9 @@ export class AuthController {
       };
     }
   }
+  @Post('gLogin')
+  googleSignIn(@Body() body) {
+    console.log(body);
+    return this.authService.googlelogin(body);
+  }
 }
